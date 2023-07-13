@@ -1,0 +1,58 @@
+name: 'Publish folder'
+description: 'Publish folder via artifacts and SSH'
+author: 'Fabien Ors'
+
+inputs:
+  host:
+    description: 'Server where you can execute SSH commands'
+  username:
+    description: 'Username for SSH connection'
+  password:
+    description: 'Password for SSH connection'
+  dest-path:
+    description: 'Full path to the destination folder in the server'
+    default: "~"
+    
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/download-artifact@v3
+      # Downloading several artifacts:
+      # https://github.com/actions/download-artifact/issues/103#issuecomment-1290368250
+      with:
+        path: download_artifacts
+    
+    - name: Retrieve the folder and zip it (sole artifact)
+      run: |
+        ls -ls download_artifacts
+        cd download_artifacts
+        FOLDER_NAME=$(ls -1)
+        tar cjvf $FNAME $FNAME.tar.gz
+        echo "FOLDER_ZIP=download_artifacts/$FOLDER_NAME.tar.gz" >> "$GITHUB_ENV"
+      shell: bash
+      
+    - name: Upload the zip to the server
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ inputs.host }}
+        username: ${{ inputs.username }}
+        password: ${{ inputs.password }}
+        source: ${{ env.FOLDER_ZIP }}
+        target: ~/
+
+    - name: Create destination folder on the server
+      uses: appleboy/ssh-action@v0.1.10
+      with:
+        host: ${{ inputs.host }}
+        username: ${{ inputs.username }}
+        password: ${{ inputs.password }}
+        script: mkdir -p ${{ inputs.dest-path }}
+
+    - name: Unzip to destination and remove download_artifacts folder
+      uses: appleboy/ssh-action@v0.1.10
+      with:
+        host: ${{ inputs.host }}
+        username: ${{ inputs.username }}
+        password: ${{ inputs.password }}
+        script: tar xf ${{ env.FOLDER_ZIP }} ${{ inputs.dest-path }}; rm -rf ~/download_artifacts
+
