@@ -27,7 +27,7 @@ runs:
         ls -ls download_artifacts
         cd download_artifacts
         FOLDER_NAME=$(ls -1)
-        tar cjvf $FNAME $FNAME.tar.gz
+        tar cjvf $FOLDER_NAME $FOLDER_NAME.tar.gz
         echo "FOLDER_ZIP=download_artifacts/$FOLDER_NAME.tar.gz" >> "$GITHUB_ENV"
       shell: bash
       
