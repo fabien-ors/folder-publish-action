@@ -1,10 +1,12 @@
 # folder-publish-action
-Simple github action to publish a flder and all its content to a server. This action assumes that the folder has been uploaded through upload-artifact action.
+Simple github action to publish a folder and all its content to a server. This action assumes that the folder has been uploaded through upload-artifact action.
 
 I made this following this guide :
 https://docs.github.com/en/actions/creating-actions/creating-a-composite-action
 
-**Important**: Only support **Linux** docker container. But if you want to publish from a **Windows** or **Mac** runner, the idea is to build under **Windows**/**Mac** and publish under **Linux** using this action (see usage).
+**Important**:
+- Only support **Linux** runner. But if you want to publish from a **Windows** or **Mac** runner, the idea is to build under **Windows**/**Mac** and publish under **Linux** using this action (see usage).
+- This action overwrite the previous directory in the destination path of the server (if exists) 
 
 ## Requirements
 - A local or a web server
