@@ -9,6 +9,9 @@ inputs:
     description: 'Username for SSH connection'
   password:
     description: 'Password for SSH connection'
+  name:
+    description: 'Name of the single folder to be pulished'
+    default: "*"
   dest-path:
     description: 'Full path to the destination folder in the server'
     default: "~"
@@ -26,7 +29,7 @@ runs:
       run: |
         ls -ls download_artifacts
         cd download_artifacts
-        FOLDER_NAME=$(ls -1)
+        FOLDER_NAME=$(ls -d ${{ inputs.name }})
         tar cjvf $FOLDER_NAME.tar.gz $FOLDER_NAME
         ls -ls .
         echo "FOLDER_ZIP=download_artifacts/$FOLDER_NAME.tar.gz" >> "$GITHUB_ENV"

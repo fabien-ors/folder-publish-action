@@ -1,5 +1,5 @@
 # folder-publish-action
-Simple github action to publish a folder and all its content to a server. This action assumes that the folder has been uploaded through upload-artifact v4 action.
+Simple github action to publish one folder and all its content to a server. This action assumes that the folder has been uploaded through upload-artifact v4 action.
 
 I made this following this guide :
 https://docs.github.com/en/actions/creating-actions/creating-a-composite-action
@@ -18,6 +18,7 @@ https://docs.github.com/en/actions/creating-actions/creating-a-composite-action
 * ```username``` - Username for SSH connection
 * ```password:``` - Password for SSH connection
 * ```dest-path``` - Full path to destination folder in the server
+* ```name``` - The name of the folder among all artifacts (Optional)
 
 ## Usage
 TODO
